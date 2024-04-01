@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  api1:
+    build: ./main-api
+    container_name: main_api
+    ports:
+      - ${MAIN_API_PORT}:${MAIN_API_PORT}
+    networks:
+      - backend
+    volumes:
+      - ./main-api/src/prisma:/usr/src/main/src/prisma
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+
+  api2:
+    build: ./payment-api
+    container_name: payment_api
+    ports:
+      - ${PAYMENT_API_PORT}:${PAYMENT_API_PORT}
+    networks:
+      - backend
+    volumes:
+      - ./payment-api/src/prisma:/usr/src/payment/src/prisma
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    networks:
+      - backend
+    env_file:
+      - .env
+
+networks:
+  backend:
+    driver: bridge
