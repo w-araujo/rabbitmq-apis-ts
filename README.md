@@ -16,6 +16,9 @@ Simulating communication between two apis, using rabbitMQ and database persisten
 The project has two apis, main and payment.
 Payment is the consumer of the queue, while main triggers a message after inserting a post into the system, causing payment to register in the database with the information coming from main.
 
+![consumer](https://github.com/w-araujo/rabbitmq-apis-ts/blob/main/rabbitmq-consumer.png)
+![payment](https://github.com/w-araujo/rabbitmq-apis-ts/blob/main/rabbitmq-payment.png)
+
 ## 🛠️ Technologies Used
 
 - [NodeJS](https://nodejs.org/en)
